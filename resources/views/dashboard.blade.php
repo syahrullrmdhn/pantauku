@@ -30,7 +30,7 @@
         <div class="small-box bg-success">
             <div class="inner">
                 <h3>{{ $appOpens ?? 0 }}</h3>
-                <p>Buka Aplikasi</p>
+                <p>Aplikasi Dibuka</p>
             </div>
             <div class="icon">
                 <i class="fas fa-mobile-alt"></i>
@@ -38,12 +38,12 @@
         </div>
     </div>
 
-    <!-- Browser Access -->
-    <div class="col-lg-3 col-6">
+    <!-- Browser Accesses -->
+    <div class="col-lg-2 col-6">
         <div class="small-box bg-warning">
             <div class="inner">
-                <h3>{{ $browserAccess ?? 0 }}</h3>
-                <p>Akses Browser</p>
+                <h3>{{ $browserAccesses ?? 0 }}</h3>
+                <p>Browser</p>
             </div>
             <div class="icon">
                 <i class="fas fa-globe"></i>
@@ -51,11 +51,24 @@
         </div>
     </div>
 
+    <!-- Download APK -->
+    <div class="col-lg-2 col-6">
+        <div class="small-box bg-primary">
+            <div class="inner">
+                <h3><i class="fas fa-download"></i></h3>
+                <p>Unduh APK</p>
+            </div>
+            <a href="/pantauku-agent.apk" class="small-box-footer" download>
+                Download <i class="fas fa-arrow-circle-down ml-1"></i>
+            </a>
+        </div>
+    </div>
+
     <!-- Suspicious -->
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-2 col-6">
         <div class="small-box bg-danger">
             <div class="inner">
-                <h3>{{ $suspicious ?? 0 }}</h3>
+                <h3>{{ $suspiciousCount ?? 0 }}</h3>
                 <p>Mencurigakan</p>
             </div>
             <div class="icon">

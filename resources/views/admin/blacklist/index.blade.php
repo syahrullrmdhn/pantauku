@@ -78,7 +78,7 @@
                     <i class="fas fa-ban mr-1"></i> Daftar Blacklist
                 </h3>
                 <div class="card-tools">
-                    <span class="badge badge-dark ml-2">{{ $blacklists->count() ?? 0 }} domain</span>
+                    <span class="badge badge-dark ml-2">{{ $domains->total() ?? 0 }} domain</span>
                 </div>
             </div>
             <div class="card-body table-responsive p-0">
@@ -93,9 +93,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($blacklists ?? [] as $index => $item)
+                        @forelse($domains ?? [] as $index => $item)
                         <tr>
-                            <td>{{ $blacklists->firstItem() + $index ?? $loop->iteration }}</td>
+                            <td>{{ $domains->firstItem() + $index ?? $loop->iteration }}</td>
                             <td><code>{{ $item->domain }}</code></td>
                             <td>{{ $item->notes ?: '-' }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}</td>
@@ -167,10 +167,10 @@
                     </tbody>
                 </table>
             </div>
-            @if(isset($blacklists) && $blacklists->hasPages())
+            @if(isset($domains) && $domains->hasPages())
             <div class="card-footer clearfix">
                 <div class="float-right">
-                    {{ $blacklists->links() }}
+                    {{ $domains->links() }}
                 </div>
             </div>
             @endif
