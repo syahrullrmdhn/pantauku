@@ -52,7 +52,7 @@ object ApiClient {
         val sb = StringBuilder("[")
         events.forEachIndexed { i, event ->
             if (i > 0) sb.append(",")
-            sb.append("""{"type":"${event.type}","value":"${escapeJson(event.value)}","device_id":"${event.deviceId}""")
+            sb.append("""{"type":"${event.type}","value":"${escapeJson(event.value)}","device_id":"${event.deviceId}"""")
             if (event.deviceName.isNotEmpty()) {
                 sb.append(""","device_name":"${escapeJson(event.deviceName)}"""")
             }

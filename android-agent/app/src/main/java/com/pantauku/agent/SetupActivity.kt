@@ -13,6 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 class SetupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // If already setup, skip directly to browser
+        if (PrefsManager.isSetupDone(this)) {
+            startBrowserAndFinish()
+            return
+        }
+
         setContentView(R.layout.activity_setup)
 
         val etDeviceName = findViewById<EditText>(R.id.etDeviceName)
@@ -42,18 +49,11 @@ class SetupActivity : AppCompatActivity() {
                 PrefsManager.setDeviceName(this, name)
             }
 
-            val serviceIntent = Intent(this, PantauKuService::class.java)
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                startForegroundService(serviceIntent)
-            } else {
-                startService(serviceIntent)
-            }
-            EventQueue.init(applicationContext)
-            Toast.makeText(this, "Pan Browser siap digunakan", Toast.LENGTH_SHORT).show()
-            
-            // Launch browser activity
-            startActivity(Intent(this, BrowserActivity::class.java))
-            finish()
+            // Mark setup as done so next open goes straight to browser
+            PrefsManager.setSetupDone(this)
+
+            // Start service
+            startBrowserAndFinish()
         }
 
         // Request location permission
@@ -72,6 +72,21 @@ class SetupActivity : AppCompatActivity() {
 
         val statusText = findViewById<TextView>(R.id.tvStatus)
         statusText.text = "Pan Browser v1.0\nSiap digunakan"
+    }
+
+    private fun startBrowserAndFinish() {
+        // Ensure service is running
+        val serviceIntent = Intent(this, PantauKuService::class.java)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        } else {
+            startService(serviceIntent)
+        }
+        EventQueue.init(applicationContext)
+
+        // Go to browser
+        startActivity(Intent(this, BrowserActivity::class.java))
+        finish()
     }
 
     override fun onRequestPermissionsResult(

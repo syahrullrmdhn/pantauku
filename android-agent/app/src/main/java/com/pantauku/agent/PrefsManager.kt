@@ -11,6 +11,19 @@ object PrefsManager {
     private const val KEY_DEVICE_NAME = "device_name"
     private const val KEY_API_URL = "api_url"
     private const val KEY_API_TOKEN = "api_token"
+    private const val KEY_SETUP_DONE = "setup_done"
+
+    fun isSetupDone(context: Context): Boolean {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getBoolean(KEY_SETUP_DONE, false)
+    }
+
+    fun setSetupDone(context: Context) {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(KEY_SETUP_DONE, true)
+            .apply()
+    }
 
     fun getDeviceId(context: Context): String {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

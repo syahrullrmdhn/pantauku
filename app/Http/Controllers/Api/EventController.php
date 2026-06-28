@@ -47,6 +47,10 @@ class EventController extends Controller
             ]);
 
             if ($validator->fails()) {
+                \Illuminate\Support\Facades\Log::warning('Event validation failed', [
+                    'errors' => $validator->errors()->toArray(),
+                    'item' => $item,
+                ]);
                 continue; // Skip invalid events in batch
             }
 
