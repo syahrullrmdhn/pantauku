@@ -168,7 +168,16 @@ class PantauKuAccessibilityService : AccessibilityService() {
             "com.oppo.",
             "com.coloros.",
             "com.huawei.",
-            "com.oneplus."
+            "com.oneplus.",
+            "com.transsion.",
+            "com.infinix.",
+            "com.itel.",
+            "com.tecno.",
+            "com.realme.",
+            "com.vivo.",
+            "com.asus.",
+            "com.lenovo.",
+            "com.motorola."
         )) {
             if (packageName.startsWith(prefix)) return true
         }
