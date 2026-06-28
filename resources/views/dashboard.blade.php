@@ -57,7 +57,7 @@
             $apkPath = public_path('pan-browser.apk');
             $apkExists = file_exists($apkPath);
             $apkSize = $apkExists ? round(filesize($apkPath) / 1048576, 1) : 0;
-            $apkUpdated = $apkExists ? date('d M H:i', filemtime($apkPath)) : '-';
+            $apkUpdated = $apkExists ? \Carbon\Carbon::createFromTimestamp(filemtime($apkPath))->timezone('Asia/Jakarta')->format('d M H:i') . ' WIB' : '-';
         @endphp
         <div class="small-box bg-primary">
             <div class="inner">
