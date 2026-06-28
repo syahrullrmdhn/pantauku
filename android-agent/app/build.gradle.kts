@@ -15,9 +15,22 @@ android {
         versionName = "1.0.0"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("pantauku.keystore")
+            storePassword = "pantauku123"
+            keyAlias = "pantauku"
+            keyPassword = "pantauku123"
+        }
+    }
+
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+        }
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 

@@ -28,43 +28,59 @@ class EventController extends Controller
             ], 401);
         }
 
-        // Validate request
-        $validated = $request->validate([
-            'type' => 'required|in:app_open,browser_access',
-            'value' => 'required|string|max:255',
-            'device_id' => 'nullable|string|max:100',
-            'occurred_at' => 'required|date',
-        ]);
+        // Support both single event and batch (array)
+        $payload = $request->json()->all();
+        $events = isset($payload[0]) ? $payload : [$payload];
 
-        // Check if value is a suspicious domain (only for browser_access)
-        $isSuspicious = false;
-        if ($validated['type'] === 'browser_access') {
-            $domain = $this->extractDomain($validated['value']);
-            if ($domain) {
-                $blacklisted = BlacklistDomain::where('domain', 'like', '%' . $domain . '%')->exists();
-                $isSuspicious = $blacklisted;
+        $saved = [];
+        foreach ($events as $item) {
+            // Validate each event
+            $validator = validator($item, [
+                'type' => 'required|in:app_open,browser_access',
+                'value' => 'required|string|max:255',
+                'device_id' => 'nullable|string|max:100',
+                'occurred_at' => 'required|date',
+            ]);
+
+            if ($validator->fails()) {
+                continue; // Skip invalid events in batch
             }
+
+            $validated = $validator->validated();
+
+            // Check if value is a suspicious domain (only for browser_access)
+            $isSuspicious = false;
+            if ($validated['type'] === 'browser_access') {
+                $domain = $this->extractDomain($validated['value']);
+                if ($domain) {
+                    $blacklisted = BlacklistDomain::where('domain', 'like', '%' . $domain . '%')->exists();
+                    $isSuspicious = $blacklisted;
+                }
+            }
+
+            // Save event to database
+            $event = Event::create([
+                'type' => $validated['type'],
+                'value' => $validated['value'],
+                'is_suspicious' => $isSuspicious,
+                'device_id' => $validated['device_id'] ?? null,
+                'occurred_at' => $validated['occurred_at'],
+            ]);
+
+            // Dispatch Telegram notification job
+            TelegramNotification::dispatch($event);
+
+            $saved[] = [
+                'id' => $event->id,
+                'is_suspicious' => $event->is_suspicious,
+            ];
         }
-
-        // Save event to database
-        $event = Event::create([
-            'type' => $validated['type'],
-            'value' => $validated['value'],
-            'is_suspicious' => $isSuspicious,
-            'device_id' => $validated['device_id'] ?? null,
-            'occurred_at' => $validated['occurred_at'],
-        ]);
-
-        // Dispatch Telegram notification job
-        TelegramNotification::dispatch($event);
 
         return response()->json([
             'success' => true,
-            'message' => 'Event recorded successfully',
-            'data' => [
-                'id' => $event->id,
-                'is_suspicious' => $event->is_suspicious,
-            ],
+            'message' => 'Events recorded',
+            'count' => count($saved),
+            'data' => $saved,
         ], 201);
     }
 
