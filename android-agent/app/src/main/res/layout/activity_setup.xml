@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="🌐"
+        android:text="🐼"
         android:textSize="64sp"
         android:layout_marginBottom="16dp" />
 
@@ -32,7 +32,30 @@
         android:textSize="13sp"
         android:textColor="#666666"
         android:gravity="center"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="24dp" />
+
+    <!-- Device Name Input -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nama Perangkat"
+        android:textSize="12sp"
+        android:textColor="#999999"
+        android:layout_marginBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp" />
+
+    <EditText
+        android:id="@+id/etDeviceName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contoh: HP Syahrul"
+        android:textSize="14sp"
+        android:padding="12dp"
+        android:background="@android:drawable/edit_text"
+        android:layout_marginBottom="16dp"
+        android:singleLine="true"
+        android:maxLength="50" />
 
     <Button
         android:id="@+id/btnAccessibility"

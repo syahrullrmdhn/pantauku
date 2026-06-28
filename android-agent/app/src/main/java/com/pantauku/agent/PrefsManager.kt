@@ -1,12 +1,14 @@
 package com.pantauku.agent
 
 import android.content.Context
+import android.os.Build
 import android.provider.Settings
 import java.util.UUID
 
 object PrefsManager {
     private const val PREFS_NAME = "pantauku_prefs"
     private const val KEY_DEVICE_ID = "device_id"
+    private const val KEY_DEVICE_NAME = "device_name"
     private const val KEY_API_URL = "api_url"
     private const val KEY_API_TOKEN = "api_token"
 
@@ -21,6 +23,24 @@ object PrefsManager {
             prefs.edit().putString(KEY_DEVICE_ID, id).apply()
         }
         return id
+    }
+
+    fun getDeviceName(context: Context): String {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        var name = prefs.getString(KEY_DEVICE_NAME, null)
+        if (name == null) {
+            // Default: use device model
+            name = Build.MODEL ?: "Android Device"
+            prefs.edit().putString(KEY_DEVICE_NAME, name).apply()
+        }
+        return name
+    }
+
+    fun setDeviceName(context: Context, name: String) {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putString(KEY_DEVICE_NAME, name)
+            .apply()
     }
 
     fun getApiUrl(context: Context): String {

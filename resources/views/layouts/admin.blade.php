@@ -100,6 +100,14 @@
                         </a>
                     </li>
 
+                    <!-- Maps -->
+                    <li class="nav-item">
+                        <a href="{{ route('maps') }}" class="nav-link {{ request()->routeIs('maps') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-map-marker-alt"></i>
+                            <p>Maps</p>
+                        </a>
+                    </li>
+
                     <!-- Settings -->
                     <li class="nav-item">
                         <a href="{{ route('settings.index') }}" class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">

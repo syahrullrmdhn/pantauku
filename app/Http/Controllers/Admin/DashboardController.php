@@ -93,4 +93,26 @@ class DashboardController extends Controller
 
         return response($html)->header('Content-Type', 'text/html');
     }
+
+    public function maps()
+    {
+        return view('maps');
+    }
+
+    public function locations(Request $request)
+    {
+        $hours = $request->input('hours', 24);
+        $locations = Event::where('type', 'location')
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->where('occurred_at', '>=', now()->subHours($hours))
+            ->orderBy('occurred_at', 'desc')
+            ->limit(500)
+            ->get(['latitude', 'longitude', 'device_name', 'device_id', 'occurred_at']);
+
+        return response()->json([
+            'success' => true,
+            'data' => $locations,
+        ]);
+    }
 }

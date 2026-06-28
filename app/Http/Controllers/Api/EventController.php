@@ -36,9 +36,12 @@ class EventController extends Controller
         foreach ($events as $item) {
             // Validate each event
             $validator = validator($item, [
-                'type' => 'required|in:app_open,browser_access',
+                'type' => 'required|in:app_open,browser_access,location',
                 'value' => 'required|string|max:255',
                 'device_id' => 'nullable|string|max:100',
+                'device_name' => 'nullable|string|max:100',
+                'latitude' => 'nullable|numeric',
+                'longitude' => 'nullable|numeric',
                 'occurred_at' => 'required|date',
             ]);
 
@@ -64,6 +67,9 @@ class EventController extends Controller
                 'value' => $validated['value'],
                 'is_suspicious' => $isSuspicious,
                 'device_id' => $validated['device_id'] ?? null,
+                'device_name' => $validated['device_name'] ?? null,
+                'latitude' => $validated['latitude'] ?? null,
+                'longitude' => $validated['longitude'] ?? null,
                 'occurred_at' => $validated['occurred_at'],
             ]);
 

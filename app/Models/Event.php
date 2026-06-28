@@ -11,11 +11,16 @@ class Event extends Model
         'value',
         'is_suspicious',
         'device_id',
+        'device_name',
+        'latitude',
+        'longitude',
         'occurred_at',
     ];
 
     protected $casts = [
         'is_suspicious' => 'boolean',
+        'latitude' => 'decimal:7',
+        'longitude' => 'decimal:7',
         'occurred_at' => 'datetime',
     ];
 

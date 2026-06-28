@@ -32,4 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/export', function () { return view('export'); })->name('export.index');
     Route::get('/export/pdf', [DashboardController::class, 'exportPdf'])->name('export.pdf');
     Route::get('/export/csv', [DashboardController::class, 'exportCsv'])->name('export.csv');
+
+    // Maps
+    Route::get('/maps', [DashboardController::class, 'maps'])->name('maps');
+    Route::get('/api/locations', [DashboardController::class, 'locations'])->name('api.locations');
 });

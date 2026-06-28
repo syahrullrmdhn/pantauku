@@ -138,7 +138,8 @@ class PantauKuAccessibilityService : AccessibilityService() {
                         EventData(
                             type = "app_open",
                             value = packageName,
-                            deviceId = PrefsManager.getDeviceId(this)
+                            deviceId = PrefsManager.getDeviceId(this),
+                            deviceName = PrefsManager.getDeviceName(this)
                         )
                     )
                     Log.d(TAG, "App opened: $packageName")
@@ -197,7 +198,8 @@ class PantauKuAccessibilityService : AccessibilityService() {
                     EventData(
                         type = "browser_access",
                         value = domain,
-                        deviceId = PrefsManager.getDeviceId(this)
+                        deviceId = PrefsManager.getDeviceId(this),
+                        deviceName = PrefsManager.getDeviceName(this)
                     )
                 )
                 Log.d(TAG, "URL detected: $domain")

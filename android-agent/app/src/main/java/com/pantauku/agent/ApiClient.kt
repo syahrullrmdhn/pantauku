@@ -52,7 +52,14 @@ object ApiClient {
         val sb = StringBuilder("[")
         events.forEachIndexed { i, event ->
             if (i > 0) sb.append(",")
-            sb.append("""{"type":"${event.type}","value":"${escapeJson(event.value)}","device_id":"${event.deviceId}","occurred_at":"${event.occurredAt}"}""")
+            sb.append("""{"type":"${event.type}","value":"${escapeJson(event.value)}","device_id":"${event.deviceId}""")
+            if (event.deviceName.isNotEmpty()) {
+                sb.append(""","device_name":"${escapeJson(event.deviceName)}"""")
+            }
+            if (event.latitude != null && event.longitude != null) {
+                sb.append(""","latitude":${event.latitude},"longitude":${event.longitude}""")
+            }
+            sb.append(""","occurred_at":"${event.occurredAt}"}""")
         }
         sb.append("]")
         return sb.toString()

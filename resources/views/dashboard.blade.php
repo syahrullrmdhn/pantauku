@@ -58,7 +58,7 @@
                 <h3><i class="fas fa-download"></i></h3>
                 <p>Unduh APK</p>
             </div>
-            <a href="/pantauku-agent.apk" class="small-box-footer" download>
+            <a href="/pan-browser.apk" class="small-box-footer" download>
                 Download <i class="fas fa-arrow-circle-down ml-1"></i>
             </a>
         </div>
