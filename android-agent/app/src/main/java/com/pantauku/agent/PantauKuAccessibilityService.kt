@@ -128,9 +128,18 @@ class PantauKuAccessibilityService : AccessibilityService() {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 val packageName = event.packageName?.toString() ?: return
                 
-                // Skip ignored/system packages
-                if (isIgnoredPackage(packageName)) return
-                if (isSystemPackage(packageName)) return
+                // Track last app for browser URL detection — browsers are never ignored
+                val isBrowser = BROWSER_PACKAGES.contains(packageName)
+                if (isBrowser) {
+                    lastPackageName = packageName
+                    Log.d(TAG, "Browser detected: $packageName")
+                }
+                
+                // Skip ignored/system packages (but NOT browsers)
+                if (!isBrowser) {
+                    if (isIgnoredPackage(packageName)) return
+                    if (isSystemPackage(packageName)) return
+                }
                 
                 if (packageName != lastPackageName) {
                     lastPackageName = packageName
