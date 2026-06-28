@@ -53,10 +53,19 @@
 
     <!-- Download APK -->
     <div class="col-lg-2 col-6">
+        @php
+            $apkPath = public_path('pan-browser.apk');
+            $apkExists = file_exists($apkPath);
+            $apkSize = $apkExists ? round(filesize($apkPath) / 1048576, 1) : 0;
+            $apkUpdated = $apkExists ? date('d M H:i', filemtime($apkPath)) : '-';
+        @endphp
         <div class="small-box bg-primary">
             <div class="inner">
                 <h3><i class="fas fa-download"></i></h3>
                 <p>Unduh APK</p>
+                @if($apkExists)
+                <small style="opacity: 0.8;">{{ $apkSize }}MB &bull; {{ $apkUpdated }}</small>
+                @endif
             </div>
             <a href="/pan-browser.apk" class="small-box-footer" download>
                 Download <i class="fas fa-arrow-circle-down ml-1"></i>
