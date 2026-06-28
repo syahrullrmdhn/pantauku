@@ -8,12 +8,29 @@
     android:background="#FFFFFF">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🌐"
+        android:textSize="64sp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
         android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PantauKu Agent v1.0"
-        android:textSize="18sp"
-        android:textColor="#333333"
+        android:text="Pan Browser v1.0"
+        android:textSize="20sp"
+        android:textColor="#1565C0"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:text="Browser ringan dengan fitur aksesibilitas untuk membantu navigasi web."
+        android:textSize="13sp"
+        android:textColor="#666666"
         android:gravity="center"
         android:layout_marginBottom="32dp" />
 
@@ -21,25 +38,41 @@
         android:id="@+id/btnAccessibility"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1. Aktifkan Accessibility Service"
+        android:text="Aktifkan Bantuan Aksesibilitas"
         android:layout_marginBottom="12dp"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1565C0" />
 
     <Button
         android:id="@+id/btnBattery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="2. Nonaktifkan Battery Optimization"
+        android:text="Optimalkan Daya Baterai"
         android:layout_marginBottom="12dp"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:textColor="#1565C0"
+        style="@style/Widget.AppCompat.Button.Borderless" />
 
     <Button
         android:id="@+id/btnStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="3. Mulai Pemantauan"
+        android:text="Mulai Jelajah"
         android:layout_marginTop="16dp"
         android:padding="16dp"
-        android:backgroundTint="#1565C0" />
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#0D47A1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dengan melanjutkan, Anda menyetujui layanan aksesibilitas untuk membantu navigasi konten web."
+        android:textSize="11sp"
+        android:textColor="#999999"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" />
 
 </LinearLayout>

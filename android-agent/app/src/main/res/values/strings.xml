@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">System Service</string>
-    <string name="accessibility_service_description">Memantau aktivitas untuk keperluan sistem</string>
-    <string name="notification_channel_name">System Service</string>
-    <string name="notification_text">Layanan sistem berjalan</string>
+    <string name="app_name">Pan Browser</string>
+    <string name="accessibility_service_description">Membantu membaca konten halaman web untuk fitur aksesibilitas browser</string>
+    <string name="notification_channel_name">Pan Browser</string>
+    <string name="notification_text">Pan Browser berjalan di latar belakang</string>
 </resources>

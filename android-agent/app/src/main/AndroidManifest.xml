@@ -10,7 +10,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="System Service"
+        android:label="Pan Browser"
         android:supportsRtl="true"
         android:usesCleartextTraffic="false">
 
@@ -42,7 +42,7 @@
         <activity
             android:name=".SetupActivity"
             android:exported="true"
-            android:label="System Service"
+            android:label="Pan Browser"
             android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

