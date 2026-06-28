@@ -108,6 +108,14 @@
                         </a>
                     </li>
 
+                    <!-- Devices -->
+                    <li class="nav-item">
+                        <a href="{{ route('devices') }}" class="nav-link {{ request()->routeIs('devices*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-mobile-alt"></i>
+                            <p>Perangkat</p>
+                        </a>
+                    </li>
+
                     <!-- Settings -->
                     <li class="nav-item">
                         <a href="{{ route('settings.index') }}" class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">

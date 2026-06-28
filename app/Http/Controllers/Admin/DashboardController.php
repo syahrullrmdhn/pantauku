@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\Device;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -114,5 +115,39 @@ class DashboardController extends Controller
             'success' => true,
             'data' => $locations,
         ]);
+    }
+
+    public function devices()
+    {
+        $devices = Device::orderBy('last_seen_at', 'desc')
+            ->get()
+            ->map(function ($device) {
+                $device->event_count = Event::where('device_id', $device->device_id)->count();
+                $device->last_location = Event::where('device_id', $device->device_id)
+                    ->where('type', 'location')
+                    ->whereNotNull('latitude')
+                    ->orderBy('occurred_at', 'desc')
+                    ->first();
+                return $device;
+            });
+
+        $totalDevices = $devices->count();
+        $onlineDevices = $devices->where('last_seen_at', '>=', now()->subMinutes(10))->count();
+
+        return view('devices', compact('devices', 'totalDevices', 'onlineDevices'));
+    }
+
+    public function updateDeviceName(Request $request)
+    {
+        $request->validate([
+            'device_id' => 'required|string|max:100',
+            'device_name' => 'required|string|max:100',
+        ]);
+
+        Device::where('device_id', $request->device_id)->update([
+            'device_name' => $request->device_name,
+        ]);
+
+        return redirect()->route('devices')->with('success', 'Nama perangkat berhasil diubah');
     }
 }

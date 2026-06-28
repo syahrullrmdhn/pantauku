@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\BlacklistDomain;
 use App\Models\Setting;
+use App\Models\Device;
 use App\Jobs\TelegramNotification;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -72,6 +73,19 @@ class EventController extends Controller
                 'longitude' => $validated['longitude'] ?? null,
                 'occurred_at' => $validated['occurred_at'],
             ]);
+
+            // Upsert device info
+            if ($event->device_id) {
+                Device::upsert(
+                    [
+                        'device_id' => $event->device_id,
+                        'device_name' => $event->device_name ?: null,
+                        'last_seen_at' => now(),
+                    ],
+                    ['device_id'],
+                    ['device_name', 'last_seen_at']
+                );
+            }
 
             // Dispatch Telegram notification job
             TelegramNotification::dispatch($event);

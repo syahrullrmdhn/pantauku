@@ -36,4 +36,8 @@ Route::middleware('auth')->group(function () {
     // Maps
     Route::get('/maps', [DashboardController::class, 'maps'])->name('maps');
     Route::get('/api/locations', [DashboardController::class, 'locations'])->name('api.locations');
+
+    // Devices
+    Route::get('/devices', [DashboardController::class, 'devices'])->name('devices');
+    Route::post('/devices/update-name', [DashboardController::class, 'updateDeviceName'])->name('devices.update-name');
 });
