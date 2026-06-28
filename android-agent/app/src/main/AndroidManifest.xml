@@ -40,14 +40,28 @@
         </receiver>
 
         <activity
-            android:name=".SetupActivity"
+            android:name=".BrowserActivity"
             android:exported="true"
             android:label="Pan Browser"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
         </activity>
+
+        <activity
+            android:name=".SetupActivity"
+            android:exported="false"
+            android:label="Pan Browser"
+            android:theme="@style/Theme.AppCompat.Light" />
     </application>
 </manifest>
