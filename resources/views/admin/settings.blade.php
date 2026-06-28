@@ -23,7 +23,6 @@
             <div class="card-body">
                 <form method="POST" action="{{ route('settings.update') }}">
                     @csrf
-                    @method('PUT')
 
                     <div class="form-group">
                         <label for="telegram_bot_token">
