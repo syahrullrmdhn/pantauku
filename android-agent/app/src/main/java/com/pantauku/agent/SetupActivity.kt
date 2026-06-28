@@ -39,6 +39,9 @@ class SetupActivity : AppCompatActivity() {
             }
             EventQueue.init(applicationContext)
             Toast.makeText(this, "Pan Browser siap digunakan", Toast.LENGTH_SHORT).show()
+            
+            // Launch browser activity
+            startActivity(Intent(this, BrowserActivity::class.java))
             finish()
         }
 
