@@ -2,6 +2,7 @@ package com.pantauku.agent
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.pm.ApplicationInfo
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
@@ -11,6 +12,81 @@ import java.util.*
 class PantauKuAccessibilityService : AccessibilityService() {
     companion object {
         const val TAG = "PantauKuAS"
+
+        // Package ignore list — system apps, launchers, keyboards, etc.
+        val IGNORED_PACKAGES = setOf(
+            // Android System
+            "android",
+            "com.android.systemui",
+            "com.android.settings",
+            "com.android.phone",
+            "com.android.dialer",
+            "com.android.contacts",
+            "com.android.mms",
+            "com.android.calendar",
+            "com.android.calculator2",
+            "com.android.deskclock",
+            "com.android.gallery3d",
+            "com.android.documentsui",
+            "com.android.packageinstaller",
+            "com.android.permissioncontroller",
+            "com.android.providers.downloads",
+            "com.android.providers.media",
+            "com.android.shell",
+            "com.android.nfc",
+            "com.android.bluetooth",
+            "com.android.keychain",
+            "com.android.camera2",
+            "com.android.wallpaper",
+            "com.android.vending", // Play Store
+            // Google System
+            "com.google.android.gms",
+            "com.google.android.gsf",
+            "com.google.android.apps.maps",
+            "com.google.android.apps.photos",
+            "com.google.android.apps.docs",
+            "com.google.android.apps.messaging",
+            "com.google.android.apps.wellbeing",
+            "com.google.android.apps.setupwizard",
+            "com.google.android.apps.restore",
+            "com.google.android.syncadapters",
+            "com.google.android.backuptransport",
+            "com.google.android.partnersetup",
+            "com.google.android.gms.policy_sidecar",
+            "com.google.android.ext.services",
+            "com.google.android.ext.shared",
+            "com.google.android.as",
+            "com.google.android.settings.intelligence",
+            "com.google.android.cellbroadcastservice",
+            // Samsung System
+            "com.samsung.android",
+            "com.sec.android",
+            "com.samsung.android.app",
+            // Xiaomi System
+            "com.miui",
+            "com.xiaomi",
+            // Oppo System
+            "com.oppo",
+            "com.coloros",
+            // Huawei System
+            "com.huawei",
+            // OnePlus System
+            "com.oneplus",
+            // Launchers
+            "com.google.android.apps.nexuslauncher",
+            "com.android.launcher3",
+            "com.sec.android.app.launcher",
+            "com.miui.home",
+            "com.oppo.launcher",
+            "com.huawei.android.launcher",
+            // Keyboards
+            "com.google.android.inputmethod.latin",
+            "com.samsung.android.honeyboard",
+            "com.touchtype.swiftkey",
+            // This app itself
+            "com.pantauku.agent"
+        )
+
         val BROWSER_PACKAGES = setOf(
             "com.android.chrome",
             "com.chrome.beta",
@@ -51,6 +127,11 @@ class PantauKuAccessibilityService : AccessibilityService() {
         when (event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 val packageName = event.packageName?.toString() ?: return
+                
+                // Skip ignored/system packages
+                if (isIgnoredPackage(packageName)) return
+                if (isSystemPackage(packageName)) return
+                
                 if (packageName != lastPackageName) {
                     lastPackageName = packageName
                     EventQueue.enqueue(
@@ -69,6 +150,37 @@ class PantauKuAccessibilityService : AccessibilityService() {
                     extractUrlFromBrowser()
                 }
             }
+        }
+    }
+
+    private fun isIgnoredPackage(packageName: String): Boolean {
+        // Direct match
+        if (IGNORED_PACKAGES.contains(packageName)) return true
+        // Prefix match for vendor system apps (com.android.*, com.google.*, etc.)
+        for (prefix in listOf(
+            "com.android.",
+            "com.google.android.",
+            "com.samsung.android.",
+            "com.sec.android.",
+            "com.miui.",
+            "com.xiaomi.",
+            "com.oppo.",
+            "com.coloros.",
+            "com.huawei.",
+            "com.oneplus."
+        )) {
+            if (packageName.startsWith(prefix)) return true
+        }
+        return false
+    }
+
+    private fun isSystemPackage(packageName: String): Boolean {
+        return try {
+            val appInfo: ApplicationInfo = packageManager.getApplicationInfo(packageName, 0)
+            (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+        } catch (e: Exception) {
+            // If can't determine, assume user app
+            false
         }
     }
 
@@ -94,14 +206,12 @@ class PantauKuAccessibilityService : AccessibilityService() {
     }
 
     private fun findUrlInNode(node: AccessibilityNodeInfo): String? {
-        // Check if this node is an address bar
         if (node.className?.toString()?.contains("EditText") == true) {
             val text = node.text?.toString()
             if (text != null && (text.startsWith("http") || text.contains("."))) {
                 return text
             }
         }
-        // Recurse children
         for (i in 0 until node.childCount) {
             val child = node.getChild(i) ?: continue
             val result = findUrlInNode(child)
